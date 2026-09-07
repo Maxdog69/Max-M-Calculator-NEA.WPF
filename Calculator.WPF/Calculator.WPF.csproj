@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ButtonIcons\exponent.png" />
+    <None Remove="ButtonIcons\log10.png" />
+    <None Remove="ButtonIcons\root.png" />
+    <None Remove="ButtonIcons\square.png" />
+    <None Remove="ButtonIcons\StoreVar.png" />
+    <None Remove="ButtonIcons\TestFrac.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WpfMath" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="ButtonIcons\exponent.png" />
+    <Resource Include="ButtonIcons\log10.png" />
+    <Resource Include="ButtonIcons\root.png" />
+    <Resource Include="ButtonIcons\square.png" />
+    <Resource Include="ButtonIcons\StoreVar.png" />
+    <Resource Include="ButtonIcons\TestFrac.png" />
+  </ItemGroup>
+
+</Project>
