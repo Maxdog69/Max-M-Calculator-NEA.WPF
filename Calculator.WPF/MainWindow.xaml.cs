@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using XamlMath;
+using Calculator.WPF.ViewModels;
 
 namespace Calculator.WPF
 {
@@ -21,6 +22,9 @@ namespace Calculator.WPF
         public MainWindow()
         {
             InitializeComponent();
+            var vm = new MainScreenViewModel();
+            DataContext = vm;
+
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -97,6 +101,7 @@ namespace Calculator.WPF
 
         private void Num0Button_Click(object sender, RoutedEventArgs e)
         {
+            
             BotExpression.Formula += "0";
         }
 
@@ -148,7 +153,7 @@ namespace Calculator.WPF
 
         private void EqualsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -196,7 +201,11 @@ namespace Calculator.WPF
 
         }
 
-        private void RecallVarButton_Click(object sender, RoutedEventArgs e)
+        private void LEFTButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void RIGHTButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

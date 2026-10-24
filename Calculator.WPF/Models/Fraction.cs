@@ -84,7 +84,11 @@ namespace Calculator.WPF.Models
 
         public static Fraction operator *(Fraction a, Fraction b)
         {
-            Fraction result = new Fraction(a.Numerator * b.Numerator, a.Denominator * b.Denominator);
+            double doubleResult = Math.Round(a.Magnitude * b.Magnitude, 15);
+            Fraction result = MathTools.convertDoubleToFrac(doubleResult);
+
+
+            //Fraction result = new Fraction(a.Numerator * b.Numerator, a.Denominator * b.Denominator);
             return result;
 
         }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Calculator.WPF.Models
 {
-    public class Utilities
+    public class RPNProcessing
     {
         static public List<RPNToken> TokeniseInfix(string infix) 
         {
@@ -117,6 +117,11 @@ namespace Calculator.WPF.Models
                     operatorStack.Push(token);
                 }
 
+                else if (token is NegateToken)
+                {
+                    operatorStack.Push(token);
+                }
+
                 else if (token is OperatorToken CurrentOperator)
                 {
                     while (!operatorStack.isEmpty())
@@ -154,7 +159,7 @@ namespace Calculator.WPF.Models
 
                     operatorStack.Pop(); // discard the left parenthesis
 
-                    if (operatorStack.Peek() is FuncToken)
+                    if (!operatorStack.isEmpty() && operatorStack.Peek() is FuncToken)
                     {
                         output.Add(operatorStack.Pop());
 
@@ -187,6 +192,12 @@ namespace Calculator.WPF.Models
                 {
                     outputStack.Push(x.Value);
                 }
+                else if (token is NegateToken)
+                {
+                    Fraction value = outputStack.Pop();
+                    outputStack.Push(new Fraction(0, 1) - value); // negate the value by subtracting it from 0
+                }
+
                 else if (token is OperatorToken op)
                 {
                     Fraction RHS = outputStack.Pop();

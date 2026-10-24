@@ -1,21 +1,31 @@
 ﻿using Calculator.WPF.Models;
-using System.Windows.Automation.Text;
-using System.Windows.Xps.Serialization;
+using Calculator.WPF.Models.Editing;
 
-//string infix = "9^2*(3+7)";
-string infix = "27^1.5";
+var row = new Row();
+//row.Nodes.Add(new ParenNode('('));
+row.Nodes.Add(new DigitNode('1stage'));
+row.Nodes.Add(new DigitNode('0'));
+row.Nodes.Add(new OperatorNode('-'));
+row.Nodes.Add(new DigitNode('3'));
+row.Nodes.Add(new OperatorNode('-'));
+row.Nodes.Add(new DigitNode('5'));
+//row.Nodes.Add(new ParenNode(')'));
+//row.Nodes.Add(new OperatorNode('*'));
+//row.Nodes.Add(new DigitNode('7'));
 
-List<RPNToken> tokens = Utilities.TokeniseInfix(infix);
 
 
-List<RPNToken> postFix = Utilities.Gen_RPN(tokens);
+Console.WriteLine(row.ToLaTex());      // 12+3
 
-Utilities.printList(postFix);
+var tokens = new List<RPNToken>();
+row.Flatten(tokens);
+foreach (var t in tokens) Console.WriteLine(t);
+
+var rpn = RPNProcessing.Gen_RPN(tokens);
+var result = RPNProcessing.ComputeRPN(rpn);
+Console.WriteLine(result);
 
 
-Console.WriteLine("------------------");
-var f = Utilities.ComputeRPN(postFix);
 
-Console.WriteLine(f);
-Console.WriteLine(f.Magnitude);
 
+// Value of Number(12), OperatorToken(+), Value of Number(3)

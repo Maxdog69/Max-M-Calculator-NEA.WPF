@@ -46,6 +46,7 @@ namespace Calculator.WPF.Models
 
     public class OperatorToken : RPNToken
     {
+
         public char Symbol;
         public int Precedence;
         public bool LeftAssociative = true; // only exponentiation is rightAssociative
@@ -67,6 +68,16 @@ namespace Calculator.WPF.Models
         public override string ToString()
         {
             return $"OperatorToken({Symbol})";
+        }
+    }
+
+    public class NegateToken : OperatorToken
+    {
+        public NegateToken() : base('~', 2, false) { }
+
+        public override string ToString()
+        {
+            return "NegateToken";
         }
     }
 

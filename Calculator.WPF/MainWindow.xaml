@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfmath="clr-namespace:WpfMath.Controls;assembly=WpfMath"
         xmlns:local="clr-namespace:Calculator.WPF"
+        xmlns:vm="clr-namespace:Calculator.WPF.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:MainScreenViewModel}"
         mc:Ignorable="d"
         Title="Calculator" Height="840" Width="504"
         KeyDown="Window_KeyDown"> <!-- checking this real quick-->
@@ -70,7 +72,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="TopExpression" Formula="\frac{a}{b} + 1 + e^{67}" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="TopExpression" Formula="\frac{a}{b} \times 1 + e^{67}" Style="{StaticResource LaTeXStyle}"/>
             </Border>
 
             <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
@@ -78,15 +80,13 @@
             </Border>
 
             <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="BotExpression" Formula="\sqrt{(a+bc)}+\frac{12+5}{(6+2)}..." Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="BotExpression" Formula="{Binding CurrentExpression.LaTeX}" Style="{StaticResource LaTeXStyle}"/>
                 <!-- actual expression -->
             </Border>
 
             <wpfmath:FormulaControl x:Name="TopResult" Grid.Row="0" Grid.Column="1" Formula="12" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
-
-
             <wpfmath:FormulaControl x:Name="MidResult" Grid.Row="1" Grid.Column="1" Formula="12" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
-            <wpfmath:FormulaControl x:Name="BotResult" Grid.Row="2" Grid.Column="1" Formula="12" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
+            <wpfmath:FormulaControl x:Name="BotResult" Grid.Row="2" Grid.Column="1" Formula="{Binding CurrentExpression.ResultLaTeX}" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
 
 
         </Grid>
@@ -117,7 +117,9 @@
             <Button x:Name="StoreVarButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="2" Click="StoreVarButton_Click">
                 <Image Source="/ButtonIcons/StoreVar.png"/>
             </Button>
-            <Button x:Name="RecallVarButton" Content="𝑥" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="3" Click="RecallVarButton_Click"/>
+            <Button x:Name="LEFTButton" Content="◀" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="LEFT"/>
+
+            <Button x:Name="RIGHTButton" Content="▶" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="RIGHT"/>
 
             <Button x:Name="SquareButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="0" Click="SquareButton_Click">
                 <Image Source="/ButtonIcons/square.png"/>
@@ -136,15 +138,15 @@
             <Button x:Name="FracButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="0" Click="FracButton_Click">
                 <Image Source="/ButtonIcons/TestFrac.png"/>
             </Button>
-            <Button x:Name="ConvertFracButton" Content="S→D" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="1" Click="ConvertFracButton_Click"/>
+            <Button x:Name="ConvertFracButton" Content="S→D" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="SD"/>
             <Button x:Name="SinButton" Content="sin(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="2" Click="SinButton_Click"/>
             <Button x:Name="CosButton" Content="cos(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="3" Click="CosButton_Click"/>
             <Button x:Name="TanButton" Content="tan(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="4" Click="TanButton_Click"/>
 
-            <Button x:Name="OpenBracButton" Content="(" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="0" Click="OpenBracButton_Click"/>
-            <Button x:Name="CloseBracButton" Content=")" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="1" Click="CloseBracButton_Click"/>
-            <Button x:Name="PiButton" Content="π" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="2" Click="PiButton_Click"/>
-            <Button x:Name="eButton" Content="e" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="3" Click="eButton_Click"/>
+            <Button x:Name="OpenBracButton" Content="(" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="("/>
+            <Button x:Name="CloseBracButton" Content=")" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter=")"/>
+            <Button x:Name="PiButton" Content="π" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="PI"/>
+            <Button x:Name="eButton" Content="e" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="E"/>
             <Button x:Name="ANSButton" Content="ANS" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="4" Click="ANSButton_Click"/>
 
 
@@ -171,36 +173,28 @@
             </Grid.ColumnDefinitions>
 
 
-            <Button x:Name="Num0Button" Content="0" Style="{StaticResource LowerScreenButton}" Grid.Row="3" Grid.Column="0" Click="Num0Button_Click"/>
-            <Button x:Name="Num1Button" Content="1" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="0" Click="Num1Button_Click"/>
-            <Button x:Name="Num2Button" Content="2" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="1" Click="Num2Button_Click"/>
-            <Button x:Name="Num3Button" Content="3" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="2" Click="Num3Button_Click"/>
-            <Button x:Name="Num4Button" Content="4" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="0" Click="Num4Button_Click"/>
-            <Button x:Name="Num5Button" Content="5" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="1" Click="Num5Button_Click"/>
-            <Button x:Name="Num6Button" Content="6" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="2" Click="Num6Button_Click"/>
-            <Button x:Name="Num7Button" Content="7" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="0" Click="Num7Button_Click"/>
-            <Button x:Name="Num8Button" Content="8" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="1" Click="Num8Button_Click"/>
-            <Button x:Name="Num9Button" Content="9" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="2" Click="Num9Button_Click"/>
-            <Button x:Name="DecimalPointButton" Content="." Style="{StaticResource LowerScreenButton}" Grid.Row="3" Grid.Column="1" Click="DecimalPointButton_Click"/>
+            <Button x:Name="Num0Button" Content="0" Style="{StaticResource LowerScreenButton}" Grid.Row="3" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="0"/>
+            <Button x:Name="Num1Button" Content="1" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="1"/>
+            <Button x:Name="Num2Button" Content="2" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="2"/>
+            <Button x:Name="Num3Button" Content="3" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="3"/>
+            <Button x:Name="Num4Button" Content="4" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="4"/>
+            <Button x:Name="Num5Button" Content="5" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="5"/>
+            <Button x:Name="Num6Button" Content="6" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="6"/>
+            <Button x:Name="Num7Button" Content="7" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="7"/>
+            <Button x:Name="Num8Button" Content="8" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="8"/>
+            <Button x:Name="Num9Button" Content="9" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="9"/>
+            <Button x:Name="DecimalPointButton" Content="." Style="{StaticResource LowerScreenButton}" Grid.Row="3" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="."/>
 
-            <Button x:Name="EqualsButton" Content="=" Style="{StaticResource LowerScreenButton}" Grid.Row="3" Grid.Column="5" Click="EqualsButton_Click"/>
-            <Button x:Name="AddButton" Content="+" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="4" Click="AddButton_Click"/>
-            <Button x:Name="MinusButton" Content="-" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="5" Click="MinusButton_Click"/>
-            <Button x:Name="TimesButton" Content="×" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="4" Click="TimesButton_Click"/>
-            <Button x:Name="DivideButton" Content="÷" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="5" Click="DivideButton_Click"/>
-            <Button x:Name="DelButton" Content="DEL" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="4" Click="DelButton_Click"/>
-            <Button x:Name="ACButton" Content="AC" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="5" Click="ACButton_Click"/>
-
-
-
+            <Button x:Name="EqualsButton" Content="=" Style="{StaticResource LowerScreenButton}" Grid.Row="3" Grid.Column="5" Command="{Binding KeyCommand}" CommandParameter="="/>
+            <Button x:Name="AddButton" Content="+" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="+"/>
+            <Button x:Name="MinusButton" Content="-" Style="{StaticResource LowerScreenButton}" Grid.Row="2" Grid.Column="5" Command="{Binding KeyCommand}" CommandParameter="-"/>
+            <Button x:Name="TimesButton" Content="×" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="*"/>
+            <Button x:Name="DivideButton" Content="÷" Style="{StaticResource LowerScreenButton}" Grid.Row="1" Grid.Column="5" Command="{Binding KeyCommand}" CommandParameter="/"/>
+            <Button x:Name="DelButton" Content="⌫" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="DEL"/>
+            <Button x:Name="ACButton" Content="AC" Style="{StaticResource LowerScreenButton}" Grid.Row="0" Grid.Column="5" Command="{Binding KeyCommand}" CommandParameter="AC"/>
 
 
         </Grid>
-
-
-
-
-
 
     </Grid>
 </Window>
