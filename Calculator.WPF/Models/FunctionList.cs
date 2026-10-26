@@ -12,6 +12,7 @@ namespace Calculator.WPF.Models
             {"sin", FunctionList.sin},
             {"cos", FunctionList.cos},
             {"tan", FunctionList.tan},
+            {"sqrt", FunctionList.sqrt },
         };
 
         public static Func<Fraction, Fraction> FetchFunction(string name)
@@ -33,15 +34,29 @@ namespace Calculator.WPF.Models
     {
         public static Fraction sin(Fraction arg)
         {
-            return arg * new Fraction(3,1); // this is obviously not sin(x) but its just to test the framework is correct
+            double result = Math.Sin(arg.Magnitude);
+            return MathTools.convertDoubleToFrac(result);
         }
         public static Fraction cos(Fraction arg)
         {
-            throw new NotImplementedException();
+            double result = Math.Cos(arg.Magnitude);
+            return MathTools.convertDoubleToFrac(result);
         }
         public static Fraction tan(Fraction arg)
         {
-            throw new NotImplementedException();
+            return sin(arg) / cos(arg);
+        }
+
+        public static Fraction sqrt(Fraction arg)
+        {
+
+            if (arg.Magnitude < 0)
+            {
+                throw new InvalidOperationException("negative root");
+            }
+
+            double result = Math.Sqrt(arg.Magnitude);
+            return MathTools.convertDoubleToFrac(result);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Calculator.WPF.Models
 
         public static Fraction convertDoubleToFrac(double d)
         {
-            string digitStr = d.ToString();
+            string digitStr = d.ToString("F15"); // avoids scientific notation for super small numbers
 
             if (digitStr.Length >= 10)
             {

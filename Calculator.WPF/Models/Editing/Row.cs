@@ -10,28 +10,44 @@ namespace Calculator.WPF.Models.Editing
     {
         public List<Node> Nodes { get; } = new();
 
-        private const string CursorMarker = @"\vert";
+        public Node Owner { get; set; }
 
+        private const string CursorMarker = @"\vert";
+        private const string EmptySlot = @"\square";
         public bool ContainsApproximate() => Nodes.Any(n => n.isApproximate);
+
+        public void Insert(int index, Node node)
+        {
+            node.ParentRow = this;
+            Nodes.Insert(index, node);
+        }
+
 
         public string ToLaTex(Cursor cursor)
         {
+
+            bool cursorHere = cursor != null && cursor.Row == this;
+
+            if (Nodes.Count == 0 && Owner != null && !cursorHere)
+            {
+                return EmptySlot;
+            }
+
             string latex = "";
 
-            for (int i = 0; i<= Nodes.Count; i++)
+            for (int i = 0; i <= Nodes.Count; i++)
             {
-                if (cursor != null && cursor.Row == this && cursor.Index == i)
+                if (cursorHere && cursor.Index == i)
                 {
                     latex += CursorMarker;
                 }
                 if (i < Nodes.Count)
                 {
-                    latex += Nodes[i].ToLaTex();
+                    latex += Nodes[i].ToLaTex(cursor);
                 }
             }
 
             return latex;
-
         }
 
         public void Flatten(List<RPNToken> output)

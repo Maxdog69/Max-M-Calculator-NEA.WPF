@@ -35,6 +35,7 @@ namespace Calculator.WPF.Models
 
         private bool _hasError;
         private bool _hasResult;
+        private string _errorMessage;
         private bool _showDecimal;
 
         private bool _isApproximate;
@@ -43,7 +44,7 @@ namespace Calculator.WPF.Models
         {
             get
             {
-                if (_hasError) return @"\text{Error}";
+                if (_hasError) return @"\text{" + _errorMessage + "}";
                 if (!_hasResult) return "";
 
                 return _showDecimal ? ResultFrac.Magnitude.ToString() : @"\frac{" + ResultFrac.Numerator.ToString() + "}{" + ResultFrac.Denominator.ToString() + "}";
@@ -96,10 +97,11 @@ namespace Calculator.WPF.Models
                 return true;
 
             }
-            catch (Exception)
+            catch (Exception error)
             {
                 _hasResult = false;
                 _hasError = true;
+                _errorMessage = error.Message;
                 OnPropertyChanged(nameof(ResultLaTeX));
                 return false;
             }

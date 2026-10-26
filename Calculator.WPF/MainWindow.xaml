@@ -72,7 +72,7 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="TopExpression" Formula="\frac{a}{b} \times 1 + e^{67}" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="TopExpression" Formula="\frac{a}{b} \times 1 \frac{\vert }{\square } + \ln +\log" Style="{StaticResource LaTeXStyle}"/>
             </Border>
 
             <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
@@ -127,21 +127,21 @@
             <Button x:Name="ExponentButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="1" Click="ExponentButton_Click">
                 <Image Source="/ButtonIcons/Exponent.png"/>
             </Button>
-            <Button x:Name="RootButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="2" Click="RootButton_Click">
+            <Button x:Name="RootButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="SQRT">
                 <Image Source="/ButtonIcons/Root.png"/>
             </Button>
-            <Button x:Name="LogButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="3" Click="LogButton_Click">
+            <Button x:Name="LogButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="LOG">
                 <Image Source="/ButtonIcons/Log10.png"/>
             </Button>
-            <Button x:Name="LnButton" Content="ln(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="4" Click="LnButton_Click"/>
+            <Button x:Name="LnButton" Content="ln(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="LN"/>
 
             <Button x:Name="FracButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="0" Click="FracButton_Click">
                 <Image Source="/ButtonIcons/TestFrac.png"/>
             </Button>
             <Button x:Name="ConvertFracButton" Content="S→D" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="SD"/>
-            <Button x:Name="SinButton" Content="sin(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="2" Click="SinButton_Click"/>
-            <Button x:Name="CosButton" Content="cos(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="3" Click="CosButton_Click"/>
-            <Button x:Name="TanButton" Content="tan(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="4" Click="TanButton_Click"/>
+            <Button x:Name="SinButton" Content="sin(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="SIN"/>
+            <Button x:Name="CosButton" Content="cos(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="COS"/>
+            <Button x:Name="TanButton" Content="tan(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="TAN"/>
 
             <Button x:Name="OpenBracButton" Content="(" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="("/>
             <Button x:Name="CloseBracButton" Content=")" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter=")"/>

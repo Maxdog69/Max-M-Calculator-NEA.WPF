@@ -45,9 +45,13 @@ namespace Calculator.WPF.ViewModels
             else if (key == "AC") { CurrentExpression = new Expression(); }
             else if (key == "(") { CurrentExpression.Insert(new ParenNode('(')); }
             else if (key == ")") { CurrentExpression.Insert(new ParenNode(')')); }
-            else if (key == "PI") { CurrentExpression.Insert(new ConstantNode("PI")); }
-            else if (key == "E") { CurrentExpression.Insert(new ConstantNode("E")); }
+            else if (key == "PI") { CurrentExpression.Insert(ConstantNode.PI()); }
+            else if (key == "E") { CurrentExpression.Insert(ConstantNode.E()); }
             else if (key == "SD") { CurrentExpression.ToggleResultFormat(); }
+            else if (key == "SIN") { CurrentExpression.Insert(FunctionNode.Sin()); }
+            else if (key == "COS") { CurrentExpression.Insert(FunctionNode.Cos()); }
+            else if (key == "TAN") { CurrentExpression.Insert(FunctionNode.Tan()); }
+            else if (key == "SQRT") { CurrentExpression.Insert(FunctionNode.Sqrt()); }
 
             else if (new[] { "+", "-", "*", "/" }.Contains(key))
             {
