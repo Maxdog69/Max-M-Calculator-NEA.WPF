@@ -17,6 +17,21 @@ namespace Calculator.WPF.Models
             Cursor = new Cursor(Root);
         }
 
+        private bool CanTakeExponent()
+        {
+            Node before = Cursor.NodeBefore;
+            Node after = Cursor.NodeAfter;
+
+            if (before == null) return false;
+            if (before is OperatorNode) return false;
+            if (before is ParenNode p && p.Symbol == '(') return false;
+            if (before is PowerNode) return false;
+            if (after is PowerNode) return false;
+
+            return true;
+        }
+
+
         // true while this is the expression being typed, false once it is in history
         private bool _isEditing = true;
         public bool IsEditing
@@ -75,6 +90,77 @@ namespace Calculator.WPF.Models
             Cursor.MoveRight(); 
             Refresh(); 
         }
+
+        public void MoveHome()
+        {
+            Cursor.MoveHome();
+            Refresh();
+        }
+
+        public void MoveEnd()
+        {
+            Cursor.MoveEnd();
+            Refresh();
+        }
+
+        public void InsertPower()
+        {
+            if (!CanTakeExponent())
+            {
+                return; // do nothing if the current node is not able to be a base
+            }
+            Cursor.Insert(new PowerNode());
+            Refresh();
+        }
+
+        public void InsertFraction()
+        {
+            var taken = new List<Node>();
+            Row row = Cursor.Row;
+            int start = Cursor.Index;
+
+            // a run of digits (and '.') directly before the cursor
+            while (start > 0 && row.Nodes[start - 1] is DigitNode)
+                start--;
+
+            if (start < Cursor.Index)
+            {
+                for (int i = start; i < Cursor.Index; i++)
+                    taken.Add(row.Nodes[i]);
+            }
+            //else if (start > 0 && (row.Nodes[start - 1] is ConstantNode || row.Nodes[start - 1] is AnsNode)) i dont have ans node implemented yet
+            else if (start > 0 && (row.Nodes[start - 1] is ConstantNode))
+            {
+                taken.Add(row.Nodes[start - 1]);                 // a single constant
+            }
+
+            // take them out of the row, using the cursor's own backspace
+            for (int i = 0; i < taken.Count; i++)
+                Cursor.Backspace();
+
+            Cursor.Insert(new FractionNode());                   // cursor lands in the numerator
+
+            foreach (var node in taken)
+                Cursor.Insert(node);                             // put the number back, inside the numerator
+
+            if (taken.Count > 0)
+                Cursor.MoveRight();                              // numerator is done, go to the denominator
+
+            Refresh();
+        }
+
+        public void InsertSquare()
+        {
+            if (!CanTakeExponent())
+            {
+                return; // do nothing if the current node is not able to be a base
+            }
+            Cursor.Insert(new PowerNode());
+            Cursor.Insert(new DigitNode('2'));
+            Cursor.MoveRight();
+            Refresh();
+        }
+
 
         // ---- evaluating ----
         public bool Compute()

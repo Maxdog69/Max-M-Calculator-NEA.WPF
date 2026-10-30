@@ -43,6 +43,12 @@ namespace Calculator.WPF.Models.Editing
                 }
                 if (i < Nodes.Count)
                 {
+                    if (Nodes[i] is PowerNode && (i == 0 || Nodes[i-1] is PowerNode))
+                    {
+                        latex += "{}";
+                    }
+
+
                     latex += Nodes[i].ToLaTex(cursor);
                 }
             }
@@ -53,9 +59,16 @@ namespace Calculator.WPF.Models.Editing
         public void Flatten(List<RPNToken> output)
         {
             string digits = "";
+            Node previous = null;
 
             foreach (Node n in Nodes)
             {
+                if (n is PowerNode && previous is PowerNode)
+                {
+                    throw new InvalidOperationException("Cannot raise a power to another power, use brackets");
+                }
+
+
                 if (n is DigitNode d)
                 {
                     digits += d.Digit;

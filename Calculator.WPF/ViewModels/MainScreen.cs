@@ -52,6 +52,11 @@ namespace Calculator.WPF.ViewModels
             else if (key == "COS") { CurrentExpression.Insert(FunctionNode.Cos()); }
             else if (key == "TAN") { CurrentExpression.Insert(FunctionNode.Tan()); }
             else if (key == "SQRT") { CurrentExpression.Insert(FunctionNode.Sqrt()); }
+            else if (key == "EXP") { CurrentExpression.InsertPower(); }
+            else if (key == "SQR") { CurrentExpression.InsertSquare(); }
+            else if (key == "FRAC") { CurrentExpression.InsertFraction(); }
+            else if (key == "GOEND") { CurrentExpression.MoveEnd(); }
+            else if (key == "GOHOME") { CurrentExpression.MoveHome(); }
 
             else if (new[] { "+", "-", "*", "/" }.Contains(key))
             {

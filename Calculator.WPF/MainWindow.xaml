@@ -9,9 +9,36 @@
         d:DataContext="{d:DesignInstance Type=vm:MainScreenViewModel}"
         mc:Ignorable="d"
         Title="Calculator" Height="840" Width="504"
-        KeyDown="Window_KeyDown"> <!-- checking this real quick-->
-        
-    
+        > <!-- checking this real quick-->
+
+    <Window.InputBindings>
+        <KeyBinding Key="Backspace" Command="{Binding KeyCommand}" CommandParameter="DEL" />
+        <KeyBinding Key="D0" Command="{Binding KeyCommand}" CommandParameter="0" /> 
+        <KeyBinding Key="D1" Command="{Binding KeyCommand}" CommandParameter="1" /> 
+        <KeyBinding Key="D2" Command="{Binding KeyCommand}" CommandParameter="2" /> 
+        <KeyBinding Key="D3" Command="{Binding KeyCommand}" CommandParameter="3" /> 
+        <KeyBinding Key="D4" Command="{Binding KeyCommand}" CommandParameter="4" /> 
+        <KeyBinding Key="D5" Command="{Binding KeyCommand}" CommandParameter="5" /> 
+        <KeyBinding Key="D6" Command="{Binding KeyCommand}" CommandParameter="6" /> 
+        <KeyBinding Key="D7" Command="{Binding KeyCommand}" CommandParameter="7" /> 
+        <KeyBinding Key="D8" Command="{Binding KeyCommand}" CommandParameter="8" /> 
+        <KeyBinding Key="D9" Command="{Binding KeyCommand}" CommandParameter="9" /> 
+        <KeyBinding Key="OemPeriod" Command="{Binding KeyCommand}" CommandParameter="." /> 
+        <KeyBinding Key="Enter" Command="{Binding KeyCommand}" CommandParameter="=" /> 
+        <KeyBinding Key="D6" Modifiers="Shift"  Command="{Binding KeyCommand}" CommandParameter="EXP" /> 
+        <KeyBinding Key="D8" Modifiers="Shift"  Command="{Binding KeyCommand}" CommandParameter="*" /> 
+        <KeyBinding Key="X" Command="{Binding KeyCommand}" CommandParameter="*" /> 
+        <KeyBinding Key="OemPlus" Command="{Binding KeyCommand}" CommandParameter="+" />
+        <KeyBinding Key="OemPlus" Modifiers="Shift" Command="{Binding KeyCommand}" CommandParameter="+" /> 
+        <KeyBinding Key="D9" Modifiers="Shift" Command="{Binding KeyCommand}" CommandParameter="(" /> 
+        <KeyBinding Key="D0" Modifiers="Shift" Command="{Binding KeyCommand}" CommandParameter=")" /> 
+        <KeyBinding Key="OemMinus" Command="{Binding KeyCommand}" CommandParameter="-" /> 
+        <KeyBinding Key="OemQuestion" Command="{Binding KeyCommand}" CommandParameter="FRAC" /> 
+        <KeyBinding Key="Left" Command="{Binding KeyCommand}" CommandParameter="LEFT" /> 
+        <KeyBinding Key="Right" Command="{Binding KeyCommand}" CommandParameter="RIGHT" /> 
+        <KeyBinding Key="Up" Command="{Binding KeyCommand}" CommandParameter="GOEND" /> 
+        <KeyBinding Key="Down" Command="{Binding KeyCommand}" CommandParameter="GOHOME" /> 
+    </Window.InputBindings>
 
     <Window.Resources>
         <Style x:Key="LowerScreenButton" TargetType="Button">
@@ -121,10 +148,10 @@
 
             <Button x:Name="RIGHTButton" Content="▶" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="RIGHT"/>
 
-            <Button x:Name="SquareButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="0" Click="SquareButton_Click">
+            <Button x:Name="SquareButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="SQR">
                 <Image Source="/ButtonIcons/square.png"/>
             </Button>
-            <Button x:Name="ExponentButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="1" Click="ExponentButton_Click">
+            <Button x:Name="ExponentButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="EXP">
                 <Image Source="/ButtonIcons/Exponent.png"/>
             </Button>
             <Button x:Name="RootButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="SQRT">
@@ -135,7 +162,7 @@
             </Button>
             <Button x:Name="LnButton" Content="ln(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="1" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="LN"/>
 
-            <Button x:Name="FracButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="0" Click="FracButton_Click">
+            <Button x:Name="FracButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="0" Command="{Binding KeyCommand}" CommandParameter="FRAC">
                 <Image Source="/ButtonIcons/TestFrac.png"/>
             </Button>
             <Button x:Name="ConvertFracButton" Content="S→D" Style="{StaticResource MiddleScreenButton}" Grid.Row="2" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="SD"/>

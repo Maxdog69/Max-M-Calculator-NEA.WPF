@@ -211,9 +211,18 @@ namespace Calculator.WPF.Models
         }
 
 
-        public static Fraction Exponent(Fraction basenum, Fraction exponent) 
+        public static Fraction Exponent(Fraction basenum, Fraction exponent) // this does not work for negative exponents
         {
             // need qth root, then just raise to power of p(integer)
+
+            if (basenum.Magnitude == 0 && exponent.Magnitude < 0)
+            {
+                throw new InvalidOperationException("division by 0");
+            }
+            else if (basenum.Magnitude == 0 && exponent.Magnitude == 0)
+            {
+                throw new InvalidOperationException("math error");
+            }
 
             if (exponent.Denominator == 1)
             {

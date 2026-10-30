@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Calculator.WPF.Models.Editing
@@ -8,6 +9,10 @@ namespace Calculator.WPF.Models.Editing
     {
         public Row Row { get; private set; }
         public int Index { get; private set; }
+
+        public Node NodeBefore => Index > 0 ? Row.Nodes[Index-1 ] : null;
+        public Node NodeAfter => Index < Row.Nodes.Count ? Row.Nodes[Index] : null;
+
 
         public Cursor(Row row)
         {

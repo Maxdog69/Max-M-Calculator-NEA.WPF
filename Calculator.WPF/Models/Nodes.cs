@@ -20,6 +20,83 @@ namespace Calculator.WPF.Models
 
     }
 
+
+    public class FractionNode : Node
+    {
+        private readonly Row[] _slots;
+
+        public Row Numerator { get; } = new();
+        public Row Denominator { get; } = new();
+
+        public FractionNode()
+        {
+            Numerator.Owner = this;
+            Denominator.Owner = this;
+            _slots = new[] { Numerator, Denominator };       // order matters: top first
+        }
+
+        public override IReadOnlyList<Row> Slots => _slots;
+
+        public override bool isApproximate =>
+            Numerator.ContainsApproximate() || Denominator.ContainsApproximate();
+
+        public override string ToLaTex(Cursor cursor) =>
+            $@"\frac{{{Numerator.ToLaTex(cursor)}}}{{{Denominator.ToLaTex(cursor)}}}";
+
+        public override void Flatten(List<RPNToken> output)
+        {
+            if (Numerator.Nodes.Count == 0 || Denominator.Nodes.Count == 0)
+                throw new FormatException("Fraction has an empty part");
+
+            // ( (numerator) / (denominator) ), so the whole thing acts as one operand
+            output.Add(new LeftParenToken());
+            output.Add(new LeftParenToken());
+            Numerator.Flatten(output);
+            output.Add(new RightParenToken());
+            output.Add(new OperatorToken('/', 2));
+            output.Add(new LeftParenToken());
+            Denominator.Flatten(output);
+            output.Add(new RightParenToken());
+            output.Add(new RightParenToken());
+        }
+    }
+
+
+    public class PowerNode : Node
+    {
+        private readonly Row[] _slots;
+        public Row Exponent { get; } = new();
+        public PowerNode()
+        {
+            Exponent.Owner = this;
+            _slots = new[] { Exponent };
+        }
+
+        public override IReadOnlyList<Row> Slots => _slots;
+
+        public override bool isApproximate => Exponent.ContainsApproximate();
+
+        public override string ToLaTex(Cursor cursor)
+        {
+            return $"^{{{Exponent.ToLaTex(cursor)}}}";
+        }
+
+        public override void Flatten(List<RPNToken> output)
+        {
+            if (Exponent.Nodes.Count == 0)
+            {
+                throw new InvalidOperationException("Empty exponent");
+            }
+
+            output.Add(new OperatorToken('^', 3, false)); // exponentitaion is right assosciative
+            output.Add(new LeftParenToken());
+            Exponent.Flatten(output);
+            output.Add(new RightParenToken());
+        }
+
+
+    }
+
     public class DigitNode : Node
     {
 
