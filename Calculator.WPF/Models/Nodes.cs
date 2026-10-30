@@ -32,7 +32,7 @@ namespace Calculator.WPF.Models
         {
             Numerator.Owner = this;
             Denominator.Owner = this;
-            _slots = new[] { Numerator, Denominator };       // order matters: top first
+            _slots = new[] { Numerator, Denominator };       
         }
 
         public override IReadOnlyList<Row> Slots => _slots;
@@ -48,7 +48,7 @@ namespace Calculator.WPF.Models
             if (Numerator.Nodes.Count == 0 || Denominator.Nodes.Count == 0)
                 throw new FormatException("Fraction has an empty part");
 
-            // ( (numerator) / (denominator) ), so the whole thing acts as one operand
+            // ( (numerator) / (denominator) ), so the whole thing acts as one number/operand
             output.Add(new LeftParenToken());
             output.Add(new LeftParenToken());
             Numerator.Flatten(output);
@@ -220,8 +220,8 @@ namespace Calculator.WPF.Models
 
     public class FunctionNode : Node
     {
-        private readonly string _identifier;                 // the name FunctionLookup knows
-        private readonly Func<string, string> _wrap;         // argument LaTeX -> full LaTeX
+        private readonly string _identifier;                 // the id for FunctionLookup 
+        private readonly Func<string, string> _wrap;        
         private readonly Row[] _slots;
 
         public Row Argument { get; } = new();
@@ -234,7 +234,6 @@ namespace Calculator.WPF.Models
             _slots = new[] { Argument };
         }
 
-        // name followed by brackets that grow with the content
         private static FunctionNode Named(string id, string latexName) =>
             new(id, inner => $@"{latexName}\left({inner}\right)");
 

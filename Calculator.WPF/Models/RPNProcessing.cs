@@ -23,7 +23,6 @@ namespace Calculator.WPF.Models
                     i += 1;
                 }
 
-                // tokenise numbers:
                 if (char.IsDigit(current) || current == '.')
                 {
                     string number = "";
@@ -36,7 +35,6 @@ namespace Calculator.WPF.Models
                     tokens.Add(new NumberToken(double.Parse(number)));
                 }
 
-                //functions/variables:
 
                 else if (char.IsLetter(current))
                 {
@@ -59,7 +57,6 @@ namespace Calculator.WPF.Models
 
                 }
 
-                // parantheses:
                 else if (current == '(')
                 {
                     tokens.Add(new LeftParenToken());
@@ -72,7 +69,6 @@ namespace Calculator.WPF.Models
                     i += 1;
                 }
 
-                // operators;
 
                 else if (current == '+' || current == '-')
                 {

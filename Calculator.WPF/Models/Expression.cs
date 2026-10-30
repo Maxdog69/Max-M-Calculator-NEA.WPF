@@ -44,7 +44,6 @@ namespace Calculator.WPF.Models
             }
         }
 
-        // derived from the Row every time, never stored
         public string LaTeX => Root.ToLaTex(IsEditing ? Cursor : null);
 
 
@@ -68,7 +67,6 @@ namespace Calculator.WPF.Models
 
         public Fraction ResultFrac { get; private set; }
 
-        // ---- editing: each call changes the row, then tells the UI ----
         public void Insert(Node node)
         {
             Cursor.Insert(node); Refresh();
@@ -119,7 +117,6 @@ namespace Calculator.WPF.Models
             Row row = Cursor.Row;
             int start = Cursor.Index;
 
-            // a run of digits (and '.') directly before the cursor
             while (start > 0 && row.Nodes[start - 1] is DigitNode)
                 start--;
 
@@ -128,23 +125,22 @@ namespace Calculator.WPF.Models
                 for (int i = start; i < Cursor.Index; i++)
                     taken.Add(row.Nodes[i]);
             }
-            //else if (start > 0 && (row.Nodes[start - 1] is ConstantNode || row.Nodes[start - 1] is AnsNode)) i dont have ans node implemented yet
             else if (start > 0 && (row.Nodes[start - 1] is ConstantNode))
             {
                 taken.Add(row.Nodes[start - 1]);                 // a single constant
             }
 
-            // take them out of the row, using the cursor's own backspace
+            // take out of the row
             for (int i = 0; i < taken.Count; i++)
                 Cursor.Backspace();
 
-            Cursor.Insert(new FractionNode());                   // cursor lands in the numerator
+            Cursor.Insert(new FractionNode());               
 
             foreach (var node in taken)
-                Cursor.Insert(node);                             // put the number back, inside the numerator
+                Cursor.Insert(node);                         
 
             if (taken.Count > 0)
-                Cursor.MoveRight();                              // numerator is done, go to the denominator
+                Cursor.MoveRight();                             
 
             Refresh();
         }
@@ -169,10 +165,10 @@ namespace Calculator.WPF.Models
 
             try
             {
-                var infix = new List<RPNToken>();          // built fresh, then thrown away
+                var infix = new List<RPNToken>();        
                 Root.Flatten(infix);
                 infix = InfixPreprocessor.Prepare(infix);
-                var postfix = RPNProcessing.Gen_RPN(infix);    // your existing code
+                var postfix = RPNProcessing.Gen_RPN(infix);   
                 ResultFrac = RPNProcessing.ComputeRPN(postfix);
 
                 _hasResult = true;

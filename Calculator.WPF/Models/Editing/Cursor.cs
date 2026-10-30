@@ -37,7 +37,7 @@ namespace Calculator.WPF.Models.Editing
             if (Index > 0)
             {
                 Node prev = Row.Nodes[Index - 1];
-                if (prev.Slots.Count > 0) EnterFromRight(prev);      // step in, don't delete
+                if (prev.Slots.Count > 0) EnterFromRight(prev);     
                 else { Row.Nodes.RemoveAt(Index - 1); Index--; }
             }
             else if (Row.Owner != null)
