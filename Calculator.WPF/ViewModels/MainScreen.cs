@@ -13,6 +13,8 @@ namespace Calculator.WPF.ViewModels
     {
         private const int MaxExpressionHistory = 2;
         public ObservableCollection<Expression> ExpressionHistory { get; } = new(); // would like to make this a queue ?
+
+
         private Expression _currentExpression = new(); 
         public Expression CurrentExpression
         {
@@ -37,8 +39,8 @@ namespace Calculator.WPF.ViewModels
 
         private void OnKey(string key)
         {
-            //if (key == "=") { PressEquals(); } NOT DONE HISTORY YET WILL SWAP BACK IN
-            if (key == "=") { CurrentExpression.Compute(); }
+            if (key == "=") { PressEquals(); } // NOT DONE HISTORY YET WILL SWAP BACK IN
+            //if (key == "=") { CurrentExpression.Compute(); }
             else if (key == "DEL") { CurrentExpression.Backspace(); }
             else if (key == "LEFT") { CurrentExpression.MoveLeft(); }
             else if (key == "RIGHT") { CurrentExpression.MoveRight(); }
@@ -57,6 +59,7 @@ namespace Calculator.WPF.ViewModels
             else if (key == "FRAC") { CurrentExpression.InsertFraction(); }
             else if (key == "GOEND") { CurrentExpression.MoveEnd(); }
             else if (key == "GOHOME") { CurrentExpression.MoveHome(); }
+            //else if (key == "SCROLLUP") { CurrentScrollIndex += 1; }
 
             else if (new[] { "+", "-", "*", "/" }.Contains(key))
             {
@@ -68,7 +71,6 @@ namespace Calculator.WPF.ViewModels
                 CurrentExpression.Insert(new DigitNode(key[0]));
             }
         }
-
 
         private void PressEquals()
         {

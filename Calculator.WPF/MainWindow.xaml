@@ -99,11 +99,21 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="TopExpression" Formula="\frac{a}{b} \times 1 \frac{\vert }{\square } + \ln +\log" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="TopExpression" Formula="{Binding ExpressionHistory[0].LaTeX}" Style="{StaticResource LaTeXStyle}"/>
             </Border>
+            
+            <!-- THis is experimental as a scroll up:-->
+            <Button Content="Scroll up"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Padding="5"
+                    Command="{Binding KeyCommand}" CommandParameter="SCROLLUP"/>
+            
 
             <Border Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="MidExpression" Formula="0" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="MidExpression" Formula="{Binding ExpressionHistory[1].LaTeX}" Style="{StaticResource LaTeXStyle}"/>
             </Border>
 
             <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
@@ -111,8 +121,8 @@
                 <!-- actual expression -->
             </Border>
 
-            <wpfmath:FormulaControl x:Name="TopResult" Grid.Row="0" Grid.Column="1" Formula="12" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
-            <wpfmath:FormulaControl x:Name="MidResult" Grid.Row="1" Grid.Column="1" Formula="12" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
+            <wpfmath:FormulaControl x:Name="TopResult" Grid.Row="0" Grid.Column="1" Formula="{Binding ExpressionHistory[0].ResultLaTeX}" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
+            <wpfmath:FormulaControl x:Name="MidResult" Grid.Row="1" Grid.Column="1" Formula="{Binding ExpressionHistory[1].ResultLaTeX}" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
             <wpfmath:FormulaControl x:Name="BotResult" Grid.Row="2" Grid.Column="1" Formula="{Binding CurrentExpression.ResultLaTeX}" Style="{StaticResource LaTeXStyle}" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
 
 
@@ -140,7 +150,7 @@
             </Grid.ColumnDefinitions>
 
             <Button x:Name="AlphaButton" Content="ALPHA" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="0" Click="AlphaButton_Click"/>
-            <Button x:Name="FunctionListButton" Content="f(𝑥)" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="1" Click="FunctionListButton_Click"/>
+            <Button x:Name="VarRecallButton" Content="𝑥" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="1"/>
             <Button x:Name="StoreVarButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="2" Click="StoreVarButton_Click">
                 <Image Source="/ButtonIcons/StoreVar.png"/>
             </Button>

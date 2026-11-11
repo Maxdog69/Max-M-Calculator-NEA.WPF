@@ -134,7 +134,7 @@ namespace Calculator.WPF.Models
         }
 
         public static ConstantNode PI() => new(@"\pi ", Math.PI);
-        public static ConstantNode E() => new("e", Math.E);
+        public static ConstantNode E() => new(" e ", Math.E);
 
         public override string ToLaTex(Cursor cursor)
         {

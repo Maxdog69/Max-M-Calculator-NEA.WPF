@@ -191,10 +191,6 @@ namespace Calculator.WPF
 
         }
 
-        private void FunctionListButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void StoreVarButton_Click(object sender, RoutedEventArgs e)
         {
