@@ -49,7 +49,7 @@ namespace Calculator.WPF.ViewModels
             else if (key == ")") { CurrentExpression.Insert(new ParenNode(')')); }
             else if (key == "PI") { CurrentExpression.Insert(ConstantNode.PI()); }
             else if (key == "E") { CurrentExpression.Insert(ConstantNode.E()); }
-            else if (key == "SD") { CurrentExpression.ToggleResultFormat(); }
+            else if (key == "SD") { ToggleLatestResult(); }
             else if (key == "SIN") { CurrentExpression.Insert(FunctionNode.Sin()); }
             else if (key == "COS") { CurrentExpression.Insert(FunctionNode.Cos()); }
             else if (key == "TAN") { CurrentExpression.Insert(FunctionNode.Tan()); }
@@ -86,6 +86,12 @@ namespace Calculator.WPF.ViewModels
 
             CurrentExpression = new Expression();
 
+        }
+        
+        private void ToggleLatestResult()
+        {
+            if (ExpressionHistory.Count == 0) return;
+            ExpressionHistory[ExpressionHistory.Count - 1].ToggleResultFormat();
         }
 
 

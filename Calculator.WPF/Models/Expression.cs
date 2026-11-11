@@ -61,7 +61,19 @@ namespace Calculator.WPF.Models
                 if (_hasError) return @"\text{" + _errorMessage + "}";
                 if (!_hasResult) return "";
 
-                return _showDecimal ? ResultFrac.Magnitude.ToString() : @"\frac{" + ResultFrac.Numerator.ToString() + "}{" + ResultFrac.Denominator.ToString() + "}";
+                if (_showDecimal)
+                {
+                    return ResultFrac.Magnitude.ToString();
+                }
+                else if (ResultFrac.Denominator == 1)
+                {
+                    return ResultFrac.Numerator.ToString();
+                }
+                else
+                {
+                    return @"\frac{" + ResultFrac.Numerator.ToString() + "}{" + ResultFrac.Denominator.ToString() + "}";
+                }
+
             }
         }
 
@@ -189,10 +201,11 @@ namespace Calculator.WPF.Models
             }
         }
 
-        public void ToggleResultFormat()
+        public void ToggleResultFormat() // SD NO LONGER WORKS WITH HISTORY
         {
             if (!_hasResult || _isApproximate) return; // nothing to change into decimal
             _showDecimal = !_showDecimal;
+
             OnPropertyChanged(nameof(ResultLaTeX));
         }
 

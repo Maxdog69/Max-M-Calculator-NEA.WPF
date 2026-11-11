@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance Type=vm:MainScreenViewModel}"
         mc:Ignorable="d"
         Title="Calculator" Height="840" Width="504"
-        > <!-- checking this real quick-->
+    > <!-- checking this real quick-->
 
     <Window.InputBindings>
         <KeyBinding Key="Backspace" Command="{Binding KeyCommand}" CommandParameter="DEL" />
@@ -54,7 +54,7 @@
         <Style x:Key="MiddleScreenButton" TargetType="Button">
             <Setter Property="BorderThickness" Value="2.5"/>
             <Setter Property="Background" Value="AntiqueWhite"/>
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontSize" Value="23"/>
             <Setter Property="Margin" Value="5,5,5,5"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -85,8 +85,21 @@
             <RowDefinition Height="1.1*"/>
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Side buttons -->
+        <StackPanel Grid.Column="0" Grid.RowSpan="3" Background="LightSlateGray">
+            <Button x:Name="GraphButton" Content="A" Width="55" Height="75" Margin="3 6 3 6" HorizontalAlignment="Center" />
+            <Button x:Name="FunctionListButton" Content="B" Width="55" Height="75" Margin="3 6 3 6" Click="FunctionListButton_Click" />
+            <Button x:Name="SettingsButton" Content="C" Width="55" Height="75" Margin="3 6 3 6" />
+        </StackPanel>
+        
+
         <!-- display grid -->
-        <Grid Grid.Row="0" Background="Transparent">
+        <Grid Grid.Row="0" Grid.Column="1" Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -131,7 +144,7 @@
 
 
         <!--Function button grid in mid section-->
-        <Grid Grid.Row="1" Background="Transparent">
+        <Grid Grid.Row="1" Grid.Column="1" Background="Transparent">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -149,9 +162,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="AlphaButton" Content="ALPHA" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="0" Click="AlphaButton_Click"/>
+            <Button x:Name="AlphaButton" Content="ALPHA" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="0" />
             <Button x:Name="VarRecallButton" Content="𝑥" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="1"/>
-            <Button x:Name="StoreVarButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="2" Click="StoreVarButton_Click">
+            <Button x:Name="StoreVarButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="2">
                 <Image Source="/ButtonIcons/StoreVar.png"/>
             </Button>
             <Button x:Name="LEFTButton" Content="◀" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="LEFT"/>
@@ -184,13 +197,13 @@
             <Button x:Name="CloseBracButton" Content=")" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter=")"/>
             <Button x:Name="PiButton" Content="π" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="PI"/>
             <Button x:Name="eButton" Content="e" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="E"/>
-            <Button x:Name="ANSButton" Content="ANS" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="4" Click="ANSButton_Click"/>
+            <Button x:Name="ANSButton" Content="ANS" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="4"/>
 
 
         </Grid>
 
         <!-- Input button grid in bottom section-->
-        <Grid Grid.Row="2" Background="Transparent">
+        <Grid Grid.Row="2" Grid.Column="1" Background="Transparent">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
