@@ -1,9 +1,9 @@
-﻿using Calculator.WPF.Models.Editing;
+﻿using Calculator.WPF.Models.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Calculator.WPF.Models
+namespace Calculator.WPF.Models.Editing
 {
     public abstract class Node
     {
@@ -32,7 +32,7 @@ namespace Calculator.WPF.Models
         {
             Numerator.Owner = this;
             Denominator.Owner = this;
-            _slots = new[] { Numerator, Denominator };       
+            _slots = new[] { Numerator, Denominator };
         }
 
         public override IReadOnlyList<Row> Slots => _slots;
@@ -59,6 +59,19 @@ namespace Calculator.WPF.Models
             output.Add(new RightParenToken());
             output.Add(new RightParenToken());
         }
+    }
+
+    public class VariableNode : Node
+    {
+        private readonly string _name;
+        private VariableNode(string name) => _name = name;
+
+        public static VariableNode X() => new VariableNode("x");
+
+        public override string ToLaTex(Cursor cursor) => _name;
+
+        public override void Flatten(List<RPNToken> output) =>
+            output.Add(new VariableToken(_name));
     }
 
 

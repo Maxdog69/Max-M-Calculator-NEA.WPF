@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Runtime.CompilerServices;
+using Calculator.WPF.Models.Evaluation;
 
 namespace Calculator.WPF.Models
 {
@@ -137,7 +138,7 @@ namespace Calculator.WPF.Models
                 for (int i = start; i < Cursor.Index; i++)
                     taken.Add(row.Nodes[i]);
             }
-            else if (start > 0 && (row.Nodes[start - 1] is ConstantNode))
+            else if (start > 0 && (row.Nodes[start - 1] is ConstantNode || row.Nodes[start-1] is VariableNode))
             {
                 taken.Add(row.Nodes[start - 1]);                 // a single constant
             }
@@ -179,6 +180,10 @@ namespace Calculator.WPF.Models
             {
                 var infix = new List<RPNToken>();        
                 Root.Flatten(infix);
+
+                if (infix.OfType<VariableToken>().Any())
+                    throw new FormatException("Variable has no value; seek fix later");
+
                 infix = InfixPreprocessor.Prepare(infix);
                 var postfix = RPNProcessing.Gen_RPN(infix);   
                 ResultFrac = RPNProcessing.ComputeRPN(postfix);

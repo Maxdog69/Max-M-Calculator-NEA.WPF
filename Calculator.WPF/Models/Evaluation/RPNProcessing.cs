@@ -4,7 +4,7 @@ using System.IO.Packaging;
 using System.Net;
 using System.Text;
 
-namespace Calculator.WPF.Models
+namespace Calculator.WPF.Models.Evaluation
 {
     public class RPNProcessing
     {

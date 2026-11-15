@@ -1,4 +1,5 @@
 ﻿using Calculator.WPF.Models;
+using Calculator.WPF.Models.Editing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

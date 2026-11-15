@@ -30,4 +30,8 @@
     <Resource Include="ButtonIcons\TestFrac.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Graphing\" />
+  </ItemGroup>
+
 </Project>

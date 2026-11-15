@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Policy;
 using System.Text;
 
-namespace Calculator.WPF.Models
+namespace Calculator.WPF.Models.Evaluation
 {
     public abstract class RPNToken
     {
