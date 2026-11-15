@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calculator.WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,7 @@ namespace Calculator.WPF
         {
             InitializeComponent();
 
+            DataContext = new GraphingVM();
         }
     }
 }

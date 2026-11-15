@@ -4,22 +4,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfmath="clr-namespace:WpfMath.Controls;assembly=WpfMath"
+        xmlns:vm="clr-namespace:Calculator.WPF.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:GraphingVM}"
         mc:Ignorable="d"
         Title="GraphingWindow" Height="900" Width="1600">
 
     <Window.Resources>
         <Style x:Key="BorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="BorderThickness" Value="0,0,2,2"/>
         </Style>
 
         <Style x:Key="LaTeXStyle" TargetType="wpfmath:FormulaControl">
             <Setter Property="FontSize" Value="30"/>
             <Setter Property="Padding" Value="10"/>
         </Style>
+
+        <Style x:Key="ColourButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="5 5 5 5"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+
+        <Style x:Key="CalcButtonStyle" TargetType="Button">
+            <Setter Property="BorderThickness" Value="2.5"/>
+            <Setter Property="Background" Value="#F4B0AD"/>
+            <Setter Property="FontSize" Value="23"/>
+            <Setter Property="Margin" Value="5,5,5,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,5,5,5"/>
+        </Style>
+
+
+
     </Window.Resources>
-    
-    
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.4*"/>
@@ -34,11 +57,18 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
+               
             </Grid.RowDefinitions>
 
+            <Button x:Name="colour0button" Content="col0" Grid.Row="0" Style="{StaticResource ColourButtonStyle}"/>
+            <Button x:Name="colour1button" Content="col1" Grid.Row="1" Style="{StaticResource ColourButtonStyle}"/>
+            <Button x:Name="colour2button" Content="col2" Grid.Row="2" Style="{StaticResource ColourButtonStyle}"/>
+            <Button x:Name="colour3button" Content="col3" Grid.Row="3" Style="{StaticResource ColourButtonStyle}"/>
+            <Button x:Name="colour4button" Content="col4" Grid.Row="4" Style="{StaticResource ColourButtonStyle}"/>
 
             <Border Grid.Row="0"  Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="Exp1" Formula="f(x)=x^2" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="Exp1" Formula="{Binding Expression0.LaTeX}" Style="{StaticResource LaTeXStyle}"/>
             </Border>
             <Border Grid.Row="1"  Style="{StaticResource BorderStyle}">
                 <wpfmath:FormulaControl x:Name="Exp2" Formula="f(x)=x^2" Style="{StaticResource LaTeXStyle}"/>
@@ -53,8 +83,78 @@
                 <wpfmath:FormulaControl x:Name="Exp5" Formula="f(x)=x^2" Style="{StaticResource LaTeXStyle}"/>
             </Border>
 
+            <Border Grid.Row="5" Style="{StaticResource BorderStyle}">
+                
+                <!-- Fancy button grid:-->
+                <Grid Grid.Column="0" Grid.Row="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Content="ALPHA" Grid.Column="0" Grid.Row="0" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="ALPHA" />
+                    <Button Content="𝑥" Grid.Column="1" Grid.Row="0" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="VAR" />
+                    <Button Content="sin(x)" Grid.Column="2" Grid.Row="0" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="SIN" />
+                    <Button Content="cos(x)" Grid.Column="3" Grid.Row="0" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="COS" />
+                    <Button Content="tan(x)" Grid.Column="4" Grid.Row="0" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="TAN" />
+                    <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="SQR" >
+                        <Image Source="/ButtonIcons/square.png"/>
+                    </Button>
+                    <Button Grid.Column="1" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="EXP" >
+                        <Image Source="/ButtonIcons/exponent.png"/>
+                    </Button>
+                    <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="ROOT" >
+                        <Image Source="/ButtonIcons/root.png"/>
+                    </Button>
+                    <Button Grid.Column="3" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="LOG10" >
+                        <Image Source="/ButtonIcons/log10.png"/>
+                    </Button>
+                    <Button Content="ln" Grid.Column="4" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="LN" />
+                    <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="FRAC" >
+                        <Image Source="/ButtonIcons/TestFrac.png"/>
+                    </Button>
+                    <Button Content="π" Grid.Column="1" Grid.Row="2" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="PI"/>
+                    <Button Content="e" Grid.Column="2" Grid.Row="2" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="E"/>
+                    <Button Content="◀" Grid.Column="3" Grid.Row="2" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="LEFT"/>
+                    <Button Content="▶" Grid.Column="4" Grid.Row="2" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="RIGHT"/>
+                    <Button Content="7" Grid.Column="0" Grid.Row="3" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="7" Background="#E85D58"/>
+                    <Button Content="8" Grid.Column="1" Grid.Row="3" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="8" Background="#E85D58"/>
+                    <Button Content="9" Grid.Column="2" Grid.Row="3" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="9" Background="#E85D58"/>
+                    <Button Content="4" Grid.Column="0" Grid.Row="4" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="4" Background="#E85D58"/>
+                    <Button Content="5" Grid.Column="1" Grid.Row="4" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="5" Background="#E85D58"/>
+                    <Button Content="6" Grid.Column="2" Grid.Row="4" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="6" Background="#E85D58"/>
+                    <Button Content="1" Grid.Column="0" Grid.Row="5" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="1"  Background="#E85D58"/>
+                    <Button Content="2" Grid.Column="1" Grid.Row="5" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="2" Background="#E85D58"/>
+                    <Button Content="3" Grid.Column="2" Grid.Row="5" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="3" Background="#E85D58"/>
+                    <Button Content="0" Grid.Column="0" Grid.Row="6" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="0" Background="#E85D58"/>
+                    <Button Content="." Grid.Column="1" Grid.Row="6" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="." Background="#E85D58"/>
+                    <Button Content="×" Grid.Column="3" Grid.Row="4" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="*" Background="#F8CCCB"/>
+                    <Button Content="÷" Grid.Column="4" Grid.Row="4" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="/" Background="#F8CCCB"/>
+                    <Button Content="+" Grid.Column="3" Grid.Row="5" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="+" Background="#F8CCCB"/>
+                    <Button Content="-" Grid.Column="4" Grid.Row="5" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="-" Background="#F8CCCB"/>
+                    <Button Content="⌫" Grid.Column="3" Grid.Row="3" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="DEL" Background="#F8CCCB"/>
+                    <Button Content="AC" Grid.Column="4" Grid.Row="3" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="AC" Background="#F8CCCB"/>
+                    <Button Content="(" Grid.Column="3" Grid.Row="6" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="(" Background="#F8CCCB"/>
+                    <Button Content=")" Grid.Column="4" Grid.Row="6" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter=")" Background="#F8CCCB"/>
+                </Grid>
+
+            </Border>
+
 
         </Grid>
-        
+
     </Grid>
 </Window>

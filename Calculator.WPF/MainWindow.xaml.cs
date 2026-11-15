@@ -41,16 +41,17 @@ namespace Calculator.WPF
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Are you sure you want to quit?",
-                "Quit Graphing Calculator",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+            //MessageBoxResult result = MessageBox.Show(
+            //    "Are you sure you want to quit?",
+            //    "Quit Graphing Calculator",
+            //    MessageBoxButton.YesNo,
+            //    MessageBoxImage.Question);
 
-            if (result == MessageBoxResult.Yes)
-            {
-                Application.Current.Shutdown();
-            }
+            //if (result == MessageBoxResult.Yes)
+            //{
+            //    Application.Current.Shutdown();
+            Application.Current.Shutdown();
+            //}
         }
     }
 }
