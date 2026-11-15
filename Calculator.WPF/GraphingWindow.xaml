@@ -49,6 +49,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <Button Grid.Column="1" Content="Dimensions" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 10 10 10" Height="50" FontSize="20"/>
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -58,14 +59,14 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="5*"/>
-               
+
             </Grid.RowDefinitions>
 
-            <Button x:Name="colour0button" Content="col0" Grid.Row="0" Style="{StaticResource ColourButtonStyle}"/>
-            <Button x:Name="colour1button" Content="col1" Grid.Row="1" Style="{StaticResource ColourButtonStyle}"/>
-            <Button x:Name="colour2button" Content="col2" Grid.Row="2" Style="{StaticResource ColourButtonStyle}"/>
-            <Button x:Name="colour3button" Content="col3" Grid.Row="3" Style="{StaticResource ColourButtonStyle}"/>
-            <Button x:Name="colour4button" Content="col4" Grid.Row="4" Style="{StaticResource ColourButtonStyle}"/>
+            <Button x:Name="draw0button" Content="Draw" Grid.Row="0" Style="{StaticResource ColourButtonStyle}" Background="LightSkyBlue" Foreground="White"/>
+            <Button x:Name="draw1button" Content="Draw" Grid.Row="1" Style="{StaticResource ColourButtonStyle}" Background="Red" Foreground="White"/>
+            <Button x:Name="draw2button" Content="Draw" Grid.Row="2" Style="{StaticResource ColourButtonStyle}" Background="Green" Foreground="White"/>
+            <Button x:Name="draw3button" Content="Draw" Grid.Row="3" Style="{StaticResource ColourButtonStyle}" Background="Purple" Foreground="White"/>
+            <Button x:Name="draw4button" Content="Draw" Grid.Row="4" Style="{StaticResource ColourButtonStyle}" Background="Orange" Foreground="White"/>
 
             <Border Grid.Row="0"  Style="{StaticResource BorderStyle}">
                 <wpfmath:FormulaControl x:Name="Exp1" Formula="{Binding Expression0.LaTeX}" Style="{StaticResource LaTeXStyle}"/>
@@ -84,7 +85,7 @@
             </Border>
 
             <Border Grid.Row="5" Style="{StaticResource BorderStyle}">
-                
+
                 <!-- Fancy button grid:-->
                 <Grid Grid.Column="0" Grid.Row="5">
                     <Grid.RowDefinitions>
@@ -96,7 +97,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>

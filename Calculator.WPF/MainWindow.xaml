@@ -92,9 +92,9 @@
 
         <!-- Side buttons -->
         <StackPanel Grid.Column="0" Grid.RowSpan="3" Background="LightSlateGray">
-            <Button x:Name="GraphButton" Content="A" Width="55" Height="75" Margin="3 6 3 6" Click="GraphButton_Click"/>
-            <Button x:Name="FunctionListButton" Content="B" Width="55" Height="75" Margin="3 6 3 6" Click="FunctionListButton_Click" />
-            <Button x:Name="SettingsButton" Content="C" Width="55" Height="75" Margin="3 6 3 6" />
+            <Button x:Name="GraphButton" Content="Graphs" Width="55" Height="75" Margin="3 6 3 6" Click="GraphButton_Click"/>
+            <Button x:Name="FunctionListButton" Content="F(x)" Width="55" Height="75" Margin="3 6 3 6" Click="FunctionListButton_Click" />
+            <Button x:Name="SettingsButton" Content="Settings" Width="55" Height="75" Margin="3 6 3 6" />
         </StackPanel>
 
         <Button x:Name="ExitButton" Content="X" FontSize="50" Foreground="DarkRed" Background="PaleVioletRed" Width="55" Height="75" Grid.Row="3" VerticalAlignment="Bottom" Click="ExitButton_Click" Margin="3 6 3 6"/>

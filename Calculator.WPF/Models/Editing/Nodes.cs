@@ -68,7 +68,7 @@ namespace Calculator.WPF.Models.Editing
 
         public static VariableNode X() => new VariableNode("x");
 
-        public override string ToLaTex(Cursor cursor) => _name;
+        public override string ToLaTex(Cursor cursor) => $" {_name} "; // whitepsace cause latex is weird like that
 
         public override void Flatten(List<RPNToken> output) =>
             output.Add(new VariableToken(_name));
