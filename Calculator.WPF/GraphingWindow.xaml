@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpfmath="clr-namespace:WpfMath.Controls;assembly=WpfMath"
         xmlns:vm="clr-namespace:Calculator.WPF.ViewModels"
+        xmlns:local="clr-namespace:Calculator.WPF.WPFControls"
         d:DataContext="{d:DesignInstance Type=vm:GraphingVM}"
         mc:Ignorable="d"
         Title="GraphingWindow" Height="900" Width="1600">
@@ -49,7 +50,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="1" Content="Dimensions" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 10 10 10" Height="50" FontSize="20"/>
+        <Canvas x:Name="GraphCanvas" Grid.Column="1" Background="White" ClipToBounds="True" SizeChanged="GraphCanvas_SizeChanged"/>
+
+        <Button Content="Dimensions" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 10 10 10" Height="50" FontSize="20" Click="SetRange_Click"/>
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>

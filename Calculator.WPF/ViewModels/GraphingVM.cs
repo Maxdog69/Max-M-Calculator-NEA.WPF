@@ -47,6 +47,7 @@ namespace Calculator.WPF.ViewModels
 
         private void OnKey(string key)
         {
+
             if (key == "DEL") { Expression0.Backspace(); }
             else if (key == "LEFT") { Expression0.MoveLeft(); }
             else if (key == "RIGHT") { Expression0.MoveRight(); }
