@@ -1,9 +1,11 @@
 ﻿using Calculator.WPF.Models;
 using Calculator.WPF.Models.Editing;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
@@ -15,6 +17,8 @@ namespace Calculator.WPF.ViewModels
         private const int MaxExpressionHistory = 2;
         public ObservableCollection<Expression> ExpressionHistory { get; } = new(); // would like to make this a queue ?
 
+        private double RecentAnswer;
+        private bool HasRecentAnswer = false;
 
         private Expression _currentExpression = new(); 
         public Expression CurrentExpression
@@ -41,7 +45,6 @@ namespace Calculator.WPF.ViewModels
         private void OnKey(string key)
         {
             if (key == "=") { PressEquals(); } // NOT DONE HISTORY YET WILL SWAP BACK IN
-            //if (key == "=") { CurrentExpression.Compute(); }
             else if (key == "DEL") { CurrentExpression.Backspace(); }
             else if (key == "LEFT") { CurrentExpression.MoveLeft(); }
             else if (key == "RIGHT") { CurrentExpression.MoveRight(); }
@@ -62,6 +65,19 @@ namespace Calculator.WPF.ViewModels
             else if (key == "GOHOME") { CurrentExpression.MoveHome(); }
             //else if (key == "SCROLLUP") { CurrentScrollIndex += 1; }
 
+            else if (key == "ANS") 
+            {
+                if (HasRecentAnswer)
+                {
+                    CurrentExpression.Insert(new ConstantNode(@" \mathrm{ANS}\,  ", RecentAnswer));
+                }
+                else
+                {
+                    return; // want to avoid the final else (dont want to input "A")
+                }
+            }
+
+
             else if (new[] { "+", "-", "*", "/" }.Contains(key))
             {
                 CurrentExpression.Insert(new OperatorNode(key[0]));
@@ -76,6 +92,9 @@ namespace Calculator.WPF.ViewModels
         private void PressEquals()
         {
             if (!CurrentExpression.Compute()) return; // don't add a failed expression to expression history
+
+            RecentAnswer = CurrentExpression.ResultFrac.Magnitude;
+            HasRecentAnswer = true;
 
             CurrentExpression.IsEditing = false;
             ExpressionHistory.Add(CurrentExpression);

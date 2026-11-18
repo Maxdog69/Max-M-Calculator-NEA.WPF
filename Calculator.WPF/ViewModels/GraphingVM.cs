@@ -25,6 +25,9 @@ namespace Calculator.WPF.ViewModels
                 OnPropertyChanged();
             }
         }
+
+
+
         private Expression Expression1 = new();
         private Expression Expression2 = new();
         private Expression Expression3 = new();

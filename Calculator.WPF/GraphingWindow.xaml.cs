@@ -76,7 +76,6 @@ namespace Calculator.WPF
                 double x = i * xStep; // the x coordinate of a line should be in multiples of x step
                 double px = ToPx(x);
                 AddLine(px, 0, px, height, Brushes.LightGray, 1); // add the line and number at bnoottom
-                //AddLabel(x.ToString("G4"), px+2, Math.Min(axisY + 2, height - 18)); // the random addition/subtraction stuff is just experimenting so the label doesnt sit ON hte line
                 AddLabel(x.ToString("G4"), px+2, Math.Min(axisY + 2, height - 18)); // the random addition/subtraction stuff is just experimenting so the label doesnt sit ON hte line
             }
 

@@ -200,7 +200,7 @@
             <Button x:Name="CloseBracButton" Content=")" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter=")"/>
             <Button x:Name="PiButton" Content="π" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="PI"/>
             <Button x:Name="eButton" Content="e" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="E"/>
-            <Button x:Name="ANSButton" Content="ANS" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="4"/>
+            <Button x:Name="ANSButton" Content="ANS" Style="{StaticResource MiddleScreenButton}" Grid.Row="3" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="ANS"/>
 
 
         </Grid>
