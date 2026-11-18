@@ -53,5 +53,14 @@ namespace Calculator.WPF
             Application.Current.Shutdown();
             //}
         }
+
+        private void StoreVarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var VarInput = new VarStoreScreen() { Owner = this };
+            if (VarInput.ShowDialog() == true)
+            {
+
+            }
+        }
     }
 }

@@ -20,6 +20,10 @@ namespace Calculator.WPF.ViewModels
         private double RecentAnswer;
         private bool HasRecentAnswer = false;
 
+        private double StoredVar;
+        private bool HasStoredVar = false;
+
+
         private Expression _currentExpression = new(); 
         public Expression CurrentExpression
         {
@@ -63,7 +67,16 @@ namespace Calculator.WPF.ViewModels
             else if (key == "FRAC") { CurrentExpression.InsertFraction(); }
             else if (key == "GOEND") { CurrentExpression.MoveEnd(); }
             else if (key == "GOHOME") { CurrentExpression.MoveHome(); }
-            //else if (key == "SCROLLUP") { CurrentScrollIndex += 1; }
+
+            else if (key == "STORE")
+            {
+                var VarInput = new VarStoreScreen();
+                if (VarInput.ShowDialog() == true)
+                {
+                    StoredVar = VarInput.varValue;
+                    HasStoredVar = true;
+                }
+            }
 
             else if (key == "ANS") 
             {
@@ -74,6 +87,18 @@ namespace Calculator.WPF.ViewModels
                 else
                 {
                     return; // want to avoid the final else (dont want to input "A")
+                }
+            }
+
+            else if (key == "VAR") 
+            {
+                if (HasStoredVar)
+                {
+                    CurrentExpression.Insert(new ConstantNode(@" x  ", StoredVar));
+                }
+                else
+                {
+                    return; // want to avoid the final else (dont want to input "V")
                 }
             }
 

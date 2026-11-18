@@ -166,10 +166,16 @@
             </Grid.ColumnDefinitions>
 
             <Button x:Name="AlphaButton" Content="ALPHA" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="0" />
-            <Button x:Name="VarRecallButton" Content="𝑥" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="1"/>
-            <Button x:Name="StoreVarButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="2">
+            <Button x:Name="VarRecallButton" Content="𝑥" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="1" Command="{Binding KeyCommand}" CommandParameter="VAR"/>
+            
+            <!-- <Button x:Name="StoreVarButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="2" Click="StoreVarButton_Click">
+                <Image Source="/ButtonIcons/StoreVar.png"/>
+            </Button> -->
+
+            <Button x:Name="StoreVarButton" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="2" Command="{Binding KeyCommand}" CommandParameter="STORE">
                 <Image Source="/ButtonIcons/StoreVar.png"/>
             </Button>
+            
             <Button x:Name="LEFTButton" Content="◀" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="3" Command="{Binding KeyCommand}" CommandParameter="LEFT"/>
 
             <Button x:Name="RIGHTButton" Content="▶" Style="{StaticResource MiddleScreenButton}" Grid.Row="0" Grid.Column="4" Command="{Binding KeyCommand}" CommandParameter="RIGHT"/>
