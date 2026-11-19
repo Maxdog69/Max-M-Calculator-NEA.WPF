@@ -231,6 +231,13 @@ namespace Calculator.WPF.Models
         }
 
 
+        public void Clear()
+        {
+            Cursor.MoveHome();
+            Root.Nodes.Clear();
+            Refresh();
+        }
+
         public void ToggleResultFormat() // SD NO LONGER WORKS WITH HISTORY
         {
             if (!_hasResult || _isApproximate) return; // nothing to change into decimal

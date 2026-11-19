@@ -72,24 +72,29 @@
             <Button x:Name="draw3button" Grid.Row="3" Style="{StaticResource ColourButtonStyle}" Background="Purple" Foreground="White"/>
             <Button x:Name="draw4button" Grid.Row="4" Style="{StaticResource ColourButtonStyle}" Background="Orange" Foreground="White"/>
 
+            <Button Grid.Row="0" Command="{Binding KeyCommand}" CommandParameter="EDIT1" Background="Transparent"/>
             <Border Grid.Row="0"  Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="Exp1" Formula="{Binding Expression0.LaTeX}" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="Exp1" Formula="{Binding Expressions[0].LaTeX}" Style="{StaticResource LaTeXStyle}"/>
             </Border>
-
 
             <Button Grid.Row="1" Command="{Binding KeyCommand}" CommandParameter="EDIT2" Background="Transparent"/>
             <Border Grid.Row="1"  Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="Exp2" Formula="f(x)=x^2" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="Exp2" Formula="{Binding Expressions[1].LaTeX}" Style="{StaticResource LaTeXStyle}"/>
             </Border>
 
+            <Button Grid.Row="2" Command="{Binding KeyCommand}" CommandParameter="EDIT3" Background="Transparent"/>
             <Border Grid.Row="2"  Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="Exp3" Formula="f(x)=x^2" Style="{StaticResource LaTeXStyle}" />
+                <wpfmath:FormulaControl x:Name="Exp3" Formula="{Binding Expressions[2].LaTeX}" Style="{StaticResource LaTeXStyle}" />
             </Border>
+
+            <Button Grid.Row="3" Command="{Binding KeyCommand}" CommandParameter="EDIT4" Background="Transparent"/>
             <Border Grid.Row="3"  Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="Exp4" Formula="f(x)=x^2" Style="{StaticResource LaTeXStyle}"/>
+                <wpfmath:FormulaControl x:Name="Exp4" Formula="{Binding Expressions[3].LaTeX}" Style="{StaticResource LaTeXStyle}"/>
             </Border>
+
+            <Button Grid.Row="4" Command="{Binding KeyCommand}" CommandParameter="EDIT5" Background="Transparent"/>
             <Border Grid.Row="4"  Style="{StaticResource BorderStyle}">
-                <wpfmath:FormulaControl x:Name="Exp5" Formula="f(x)=x^2" Style="{StaticResource LaTeXStyle}" />
+                <wpfmath:FormulaControl x:Name="Exp5" Formula="{Binding Expressions[4].LaTeX}" Style="{StaticResource LaTeXStyle}" />
             </Border>
 
             <Border Grid.Row="5" Style="{StaticResource BorderStyle}">
@@ -125,7 +130,7 @@
                     <Button Grid.Column="1" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="EXP" >
                         <Image Source="/ButtonIcons/exponent.png"/>
                     </Button>
-                    <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="ROOT" >
+                    <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="SQRT" >
                         <Image Source="/ButtonIcons/root.png"/>
                     </Button>
                     <Button Grid.Column="3" Grid.Row="1" Style="{StaticResource CalcButtonStyle}" Command="{Binding KeyCommand}" CommandParameter="LOG10" >

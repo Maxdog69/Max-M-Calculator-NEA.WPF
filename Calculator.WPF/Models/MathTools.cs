@@ -211,34 +211,34 @@ namespace Calculator.WPF.Models
         }
 
 
-        public static Fraction Exponent(Fraction basenum, Fraction exponent) // this does not work for negative exponents
+        public static Fraction Exponent(Fraction basenum, Fraction exponent)
         {
-            // need qth root, then just raise to power of p(integer)
+            double b = basenum.Magnitude;
+            double e = exponent.Magnitude;
 
-            if (basenum.Magnitude == 0 && exponent.Magnitude < 0)
+            if (b == 0 && e < 0)
             {
                 throw new InvalidOperationException("division by 0");
             }
-            else if (basenum.Magnitude == 0 && exponent.Magnitude == 0)
+            if (b == 0 && e == 0)
             {
-                throw new InvalidOperationException("math error");
+                throw new InvalidOperationException("0^0 is undefined");
             }
 
-            if (exponent.Denominator == 1)
-            {
-                long numerator = (long)integerExponentiation(basenum.Numerator, exponent.Numerator);
-                long denominator = (long)integerExponentiation(basenum.Denominator, exponent.Numerator);
-                return new Fraction(numerator, denominator);
+            double result = Math.Pow(b, e);
 
+            // negative base with a fractional exponent (e.g. (-8)^(1/2)) gives NaN
+            if (double.IsNaN(result))
+            {
+                throw new InvalidOperationException("non-real error");
             }
-            
-            
-            
-            double root = nthRoot(basenum.Magnitude, exponent.Denominator);
-            double result = integerExponentiation(root, exponent.Numerator);
+            // overflow, or too big to store in a long inside Fraction
+            if (double.IsInfinity(result))
+            {
+                throw new InvalidOperationException("result too large");
+            }
 
             return convertDoubleToFrac(result);
-
         }
 
 

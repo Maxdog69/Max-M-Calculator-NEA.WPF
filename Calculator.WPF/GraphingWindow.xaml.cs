@@ -39,6 +39,11 @@ namespace Calculator.WPF
                 _xMin = rangeInput.XMin; _xMax = rangeInput.XMax;
                 _yMin = rangeInput.YMin; _yMax = rangeInput.YMax;
                 DrawAxes();
+                PlotFunction(x => _vm.Expressions[0].ComputeFor(x), Brushes.Blue);
+                PlotFunction(x => _vm.Expressions[1].ComputeFor(x), Brushes.Crimson);
+                PlotFunction(x => _vm.Expressions[2].ComputeFor(x), Brushes.Green);
+                PlotFunction(x => _vm.Expressions[3].ComputeFor(x), Brushes.Purple);
+                PlotFunction(x => _vm.Expressions[4].ComputeFor(x), Brushes.Orange);
             }
 
         }
@@ -46,7 +51,11 @@ namespace Calculator.WPF
         private void drawbutton_Click(object sender, RoutedEventArgs e)
         {
             DrawAxes();
-            PlotFunction(x => _vm.Expression0.ComputeFor(x), Brushes.Crimson);
+            PlotFunction(x => _vm.Expressions[0].ComputeFor(x), Brushes.Blue);
+            PlotFunction(x => _vm.Expressions[1].ComputeFor(x), Brushes.Crimson);
+            PlotFunction(x => _vm.Expressions[2].ComputeFor(x), Brushes.Green);
+            PlotFunction(x => _vm.Expressions[3].ComputeFor(x), Brushes.Purple);
+            PlotFunction(x => _vm.Expressions[4].ComputeFor(x), Brushes.Orange);
         }
         
         private void GraphCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -101,7 +110,11 @@ namespace Calculator.WPF
                 double y = i * yStep;
                 double py = ToPy(y);
                 AddLine(0, py, width, py, Brushes.LightGray, 1);
-                AddLabel(y.ToString("G4"), Math.Min(axisX + 4, width - 35), py - 9);
+
+                if (y != 0) // avoid repeating 0 at origin
+                {
+                    AddLabel(y.ToString("G4"), Math.Min(axisX + 4, width - 35), py - 9);
+                }
             }
 
 
@@ -147,11 +160,33 @@ namespace Calculator.WPF
          */
         private static double NiceStep(double range)
         {
-            double raw = range / 10;
-            double pow = Math.Pow(10, Math.Floor(Math.Log10(raw)));
-            double f = raw / pow;
-            double nice = f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10;
-            return nice * pow;
+            double rawStep = range / 10; // aim for roughly 10 gridlines across the screen
+
+            // the power of 10 just below rawStep, e.g. 0.17 -> 0.1 and 17 -> 10
+            double magnitude = Math.Pow(10, Math.Floor(Math.Log10(rawStep)));
+
+            double ratio = rawStep / magnitude; // always between 1 and 10
+
+            // round the ratio to the nearest "nice" multiplier
+            double multiplier;
+            if (ratio < 1.5)
+            {
+                multiplier = 1;
+            }
+            else if (ratio < 3.5)
+            {
+                multiplier = 2;
+            }
+            else if (ratio < 7.5)
+            {
+                multiplier = 5;
+            }
+            else
+            {
+                multiplier = 10;
+            }
+
+            return multiplier * magnitude;
         }
 
 
@@ -182,9 +217,16 @@ namespace Calculator.WPF
                 double x = _xMin + px / width * (_xMax - _xMin);
                 double y = f(x);
 
+                // no point here (e.g. sqrt of a negative), so end the current line and start a new one later
+                if (double.IsNaN(y) || double.IsInfinity(y))
+                {
+                    Flush();
+                    continue;
+                }
+
                 double py = ToPy(y);
 
-                // Break the curve at huge jumps (likely an asymptote)
+                // end the line when the value jumps by loads
                 if (prevPy.HasValue && Math.Abs(py - prevPy.Value) > height * 2)
                 {
                     Flush();

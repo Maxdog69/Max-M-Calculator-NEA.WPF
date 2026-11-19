@@ -15,59 +15,81 @@ namespace Calculator.WPF.ViewModels
 
         public ICommand KeyCommand { get; }
 
-        private Expression _expression0 = new();
-        public Expression Expression0
+
+        private List<Expression> _expressions = new List<Expression>();
+        public List<Expression> Expressions
         {
-            get => _expression0;
+            get => _expressions;
+        }
+
+        private int _currentExpressionEditing = 0;
+
+        public int CurrentExpressionEditing
+        {
+            get => _currentExpressionEditing;
             set
             {
-                _expression0 = value;
+                _currentExpressionEditing = value;
+                UpdateEditingState();
                 OnPropertyChanged();
             }
         }
 
-
+        private void UpdateEditingState()
+        {
+            for (int i = 0; i < _expressions.Count; i++)
+            {
+                _expressions[i].IsEditing = (i == _currentExpressionEditing);
+            }
+        }
 
 
         public GraphingVM()
         {
             KeyCommand = new RelayCommand(p => OnKey((string)p));
 
-
+            for (int i = 0; i < 5; i++)
+            {
+                _expressions.Add(new Expression());
+                if (i != 0)
+                {
+                    _expressions[i].IsEditing = false;
+                }
+            }
         }
 
         private void OnKey(string key)
         {
 
-            if (key == "DEL") { Expression0.Backspace(); }
-            else if (key == "LEFT") { Expression0.MoveLeft(); }
-            else if (key == "RIGHT") { Expression0.MoveRight(); }
-            else if (key == "AC") { Expression0 = new Expression(); }
-            else if (key == "(") { Expression0.Insert(new ParenNode('(')); }
-            else if (key == ")") { Expression0.Insert(new ParenNode(')')); }
-            else if (key == "PI") { Expression0.Insert(ConstantNode.PI()); }
-            else if (key == "E") { Expression0.Insert(ConstantNode.E()); }
-            else if (key == "SIN") { Expression0.Insert(FunctionNode.Sin()); }
-            else if (key == "COS") { Expression0.Insert(FunctionNode.Cos()); }
-            else if (key == "TAN") { Expression0.Insert(FunctionNode.Tan()); }
-            else if (key == "SQRT") { Expression0.Insert(FunctionNode.Sqrt()); }
-            else if (key == "EXP") { Expression0.InsertPower(); }
-            else if (key == "SQR") { Expression0.InsertSquare(); }
-            else if (key == "FRAC") { Expression0.InsertFraction(); }
-            else if (key == "GOEND") { Expression0.MoveEnd(); }
-            else if (key == "GOHOME") { Expression0.MoveHome(); }
-            else if (key== "VAR") { Expression0.Insert(VariableNode.X()); }
+            if (key == "DEL") { Expressions[CurrentExpressionEditing].Backspace(); }
+            else if (key == "LEFT") { Expressions[CurrentExpressionEditing].MoveLeft(); }
+            else if (key == "RIGHT") { Expressions[CurrentExpressionEditing].MoveRight(); }
+            else if (key == "AC") { Expressions[CurrentExpressionEditing].Clear(); }
+            else if (key == "(") { Expressions[CurrentExpressionEditing].Insert(new ParenNode('(')); }
+            else if (key == ")") { Expressions[CurrentExpressionEditing].Insert(new ParenNode(')')); }
+            else if (key == "PI") { Expressions[CurrentExpressionEditing].Insert(ConstantNode.PI()); }
+            else if (key == "E") { Expressions[CurrentExpressionEditing].Insert(ConstantNode.E()); }
+            else if (key == "SIN") { Expressions[CurrentExpressionEditing].Insert(FunctionNode.Sin()); }
+            else if (key == "COS") { Expressions[CurrentExpressionEditing].Insert(FunctionNode.Cos()); }
+            else if (key == "TAN") { Expressions[CurrentExpressionEditing].Insert(FunctionNode.Tan()); }
+            else if (key == "SQRT") { Expressions[CurrentExpressionEditing].Insert(FunctionNode.Sqrt()); }
+            else if (key == "EXP") { Expressions[CurrentExpressionEditing].InsertPower(); }
+            else if (key == "SQR") { Expressions[CurrentExpressionEditing].InsertSquare(); }
+            else if (key == "FRAC") { Expressions[CurrentExpressionEditing].InsertFraction(); }
+            else if (key == "GOEND") { Expressions[CurrentExpressionEditing].MoveEnd(); }
+            else if (key == "GOHOME") { Expressions[CurrentExpressionEditing].MoveHome(); }
+            else if (key== "VAR") { Expressions[CurrentExpressionEditing].Insert(VariableNode.X()); }
 
-            else if (key == "EDIT2") { ; }
+            else if (key.StartsWith("EDIT")) { CurrentExpressionEditing = int.Parse(key[4].ToString()) - 1; }
 
             else if (new[] { "+", "-", "*", "/" }.Contains(key))
             {
-                Expression0.Insert(new OperatorNode(key[0]));
+                Expressions[CurrentExpressionEditing].Insert(new OperatorNode(key[0]));
             }
 
             else // key must be a digit/decimal point atp
             {
-                Expression0.Insert(new DigitNode(key[0]));
+                Expressions[CurrentExpressionEditing].Insert(new DigitNode(key[0]));
             }
         }
 
