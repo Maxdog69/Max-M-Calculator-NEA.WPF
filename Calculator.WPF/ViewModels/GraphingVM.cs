@@ -28,18 +28,6 @@ namespace Calculator.WPF.ViewModels
 
 
 
-        private Expression Expression1 = new();
-        private Expression Expression2 = new();
-        private Expression Expression3 = new();
-        private Expression Expression4 = new();
-        private Expression Expression5 = new();
-        private Expression Expression6 = new();
-        private Expression Expression7 = new();
-        private Expression Expression8 = new();
-        private Expression Expression9 = new();
-
-
-
 
         public GraphingVM()
         {
@@ -69,6 +57,8 @@ namespace Calculator.WPF.ViewModels
             else if (key == "GOEND") { Expression0.MoveEnd(); }
             else if (key == "GOHOME") { Expression0.MoveHome(); }
             else if (key== "VAR") { Expression0.Insert(VariableNode.X()); }
+
+            else if (key == "EDIT2") { ; }
 
             else if (new[] { "+", "-", "*", "/" }.Contains(key))
             {

@@ -206,7 +206,29 @@ namespace Calculator.WPF.Models
             }
         }
 
+        public double ComputeFor(double x)
+        {
+            try
+            {
+                var infix = new List<RPNToken>();
+                Root.Flatten(infix);                          // fresh tokens each call
+                infix = InfixPreprocessor.Prepare(infix);
 
+                Fraction xValue = MathTools.convertDoubleToFrac(x);
+                foreach (var token in infix)
+                    if (token is VariableToken v)
+                        v.Value = xValue;                     // only the throwaway tokens change
+
+                var postfix = RPNProcessing.Gen_RPN(infix);
+                Fraction result = RPNProcessing.ComputeRPN(postfix);
+
+                return (double)result.Numerator / (double)result.Denominator;
+            }
+            catch (Exception)
+            {
+                return double.NaN;                            // "no point here"
+            }
+        }
 
 
         public void ToggleResultFormat() // SD NO LONGER WORKS WITH HISTORY

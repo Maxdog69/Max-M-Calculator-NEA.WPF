@@ -19,13 +19,15 @@ namespace Calculator.WPF
     public partial class GraphingWindow : Window
     {
 
-        private double _xMin = -10, _xMax = 10, _yMin = -10, _yMax = 10;
+        private readonly GraphingVM _vm = new();
 
+
+        private double _xMin = -10, _xMax = 10, _yMin = -10, _yMax = 10;
 
         public GraphingWindow()
         {
             InitializeComponent();
-            DataContext = new GraphingVM();
+            DataContext =_vm;
 
         }
 
@@ -38,8 +40,15 @@ namespace Calculator.WPF
                 _yMin = rangeInput.YMin; _yMax = rangeInput.YMax;
                 DrawAxes();
             }
+
         }
 
+        private void drawbutton_Click(object sender, RoutedEventArgs e)
+        {
+            DrawAxes();
+            PlotFunction(x => _vm.Expression0.ComputeFor(x), Brushes.Crimson);
+        }
+        
         private void GraphCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             DrawAxes();
@@ -47,6 +56,8 @@ namespace Calculator.WPF
 
         private double ToPx(double x) => (x - _xMin) / (_xMax - _xMin) * GraphCanvas.ActualWidth;
         private double ToPy(double y) => (_yMax - y) / (_yMax - _yMin) * GraphCanvas.ActualHeight;
+
+
 
 
 
@@ -98,7 +109,6 @@ namespace Calculator.WPF
             if (_yMin <= 0 && 0 <= _yMax) AddLine(0, ToPy(0), width, ToPy(0), Brushes.Black, 2);
             if (_xMin <= 0 && 0 <= _xMax) AddLine(ToPx(0), 0, ToPx(0), height, Brushes.Black, 2);
 
-
         }
    
 
@@ -142,6 +152,48 @@ namespace Calculator.WPF
             double f = raw / pow;
             double nice = f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10;
             return nice * pow;
+        }
+
+
+        private void PlotFunction(Func<double, double> f, Brush brush)
+        {
+            double width = GraphCanvas.ActualWidth;
+            double height = GraphCanvas.ActualHeight;
+            var points = new PointCollection();
+            double? prevPy = null;
+
+            void Flush()
+            {
+                if (points.Count > 1)
+                {
+                    GraphCanvas.Children.Add(new Polyline
+                    {
+                        Points = points,
+                        Stroke = brush,
+                        StrokeThickness = 2
+                    });
+                }
+                points = new PointCollection();
+                prevPy = null;
+            }
+
+            for (double px = 0; px <= width; px++)
+            {
+                double x = _xMin + px / width * (_xMax - _xMin);
+                double y = f(x);
+
+                double py = ToPy(y);
+
+                // Break the curve at huge jumps (likely an asymptote)
+                if (prevPy.HasValue && Math.Abs(py - prevPy.Value) > height * 2)
+                {
+                    Flush();
+                }
+
+                points.Add(new Point(px, py));
+                prevPy = py;
+            }
+            Flush();
         }
 
 
